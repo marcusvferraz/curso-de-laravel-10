@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTO\Supports\CreateSupportDTO;
+use App\DTO\Supports\UpdateSupportDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Http\Resources\SupportResource;
+use App\Models\Support;
 use App\Services\SupportService;
 use COM;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SupportController extends Controller
 {
@@ -42,15 +45,31 @@ class SupportController extends Controller
      */
     public function show(string $id)
     {
-        //
+      if (!$support = $this->service->findOne($id)) {
+        return response()->json([
+            'error' => 'Not Found'
+        ], Response::HTTP_NOT_FOUND);
+      }
+
+      return new SupportResource($support);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateSupport $request, string $id)
     {
-        //
+        $support = $this->service->update(
+            UpdateSupportDTO::makeFromRequest($request, $id)
+        );
+
+        if(!$support) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new SupportResource($support); 
     }
 
     /**
@@ -58,6 +77,16 @@ class SupportController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (!$support = $this->service->findOne($id)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+          }
+
+          $this->service->delete($id);
+
+          return response()->json([
+            'error' => 'Not Found'
+        ], Response::HTTP_NO_CONTENT);
     }
 }
