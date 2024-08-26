@@ -9,14 +9,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <head>
+    <section class="container px-4 mx-auto">
+    
         @yield('header')
-    </head>
-    <div class="content">
+
+    <div>
         @yield('content')
     </div>
-    <footer>
-        #default footer
-    </footer>
+    
+    </section>
 </body>
 </html>
