@@ -21,7 +21,7 @@ class StatusSupport extends Component
      */
     public function render(): View|Closure|string
     {
-        // $this->status = 'P';
+        //  $this->status = 'C';
         $color = 'blue';
         $color = $this->status === 'C' ? 'green' : $color;
         $color = $this->status === 'P' ? 'red' : $color;

@@ -14,6 +14,7 @@
         @yield('header')
 
     <div>
+        <x-messages/>
         @yield('content')
     </div>
     
